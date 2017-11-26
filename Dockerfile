@@ -6,7 +6,8 @@ RUN apt-get update && apt-get install -y \
         libmcrypt-dev \
         libpng-dev \
         libpcre3-dev \
-        curl
+        curl \
+        mysql-client
 
 RUN docker-php-ext-install -j$(nproc) mysqli                                                        && \
     docker-php-ext-install -j$(nproc) pdo_mysql                                                     && \
@@ -32,3 +33,16 @@ RUN touch /usr/local/etc/php/php.ini && \
 
 RUN curl -fsSL -o /usr/local/bin/drupal "https://drupalconsole.com/installer" && \
   chmod +x /usr/local/bin/drupal
+
+# Add the Redis PHP module.
+RUN git clone --branch="master" https://github.com/phpredis/phpredis.git /usr/src/php/ext/redis && \
+  # Install the Redis module.
+  docker-php-ext-install redis && \
+  # Test to make sure it's available.
+  php -m && php -r "new Redis();"
+
+# Set the Drush version.
+ENV DRUSH_VERSION 8.1.15
+
+RUN curl -fsSL -o /usr/local/bin/drush "https://github.com/drush-ops/drush/releases/download/$DRUSH_VERSION/drush.phar" && \
+  chmod +x /usr/local/bin/drush
