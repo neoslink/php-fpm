@@ -7,7 +7,8 @@ RUN apt-get update && apt-get install -y \
         libpng-dev \
         libpcre3-dev \
         curl \
-        mysql-client
+        mysql-client \
+        git-core
 
 RUN docker-php-ext-install -j$(nproc) mysqli                                                        && \
     docker-php-ext-install -j$(nproc) pdo_mysql                                                     && \
