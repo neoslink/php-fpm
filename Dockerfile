@@ -5,7 +5,8 @@ RUN apt-get update && apt-get install -y \
         libjpeg62-turbo-dev \
         libmcrypt-dev \
         libpng-dev \
-        libpcre3-dev
+        libpcre3-dev \
+        curl
 
 RUN docker-php-ext-install -j$(nproc) mysqli                                                        && \
     docker-php-ext-install -j$(nproc) pdo_mysql                                                     && \
@@ -28,3 +29,6 @@ RUN touch /usr/local/etc/php/php.ini && \
   echo "xdebug.remote_port=9002" >> /usr/local/etc/php/php.ini && \
   echo "xdebug.remote_connect_back=0" >> /usr/local/etc/php/php.ini && \
   echo "memory_limit=512M" >> /usr/local/etc/php/php.ini
+
+RUN curl -fsSL -o /usr/local/bin/drupal "https://drupalconsole.com/installer" && \
+  chmod +x /usr/local/bin/drupal
