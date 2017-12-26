@@ -21,6 +21,9 @@ RUN docker-php-ext-install -j$(nproc) mysqli                                    
 RUN pecl install xdebug-2.5.0 && \
     docker-php-ext-enable xdebug
 
+RUN pecl install oauth-2.0.2 && \
+    docker-php-ext-enable oauth
+
 RUN apt-get clean && rm -rf /var/lib/apt/lists/* /tmp/* /var/tmp/*
 
 RUN touch /usr/local/etc/php/php.ini && \
